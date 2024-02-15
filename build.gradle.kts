@@ -1,3 +1,4 @@
+import io.gitlab.arturbosch.detekt.Detekt
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
@@ -5,6 +6,8 @@ plugins {
 	id("io.spring.dependency-management") version "1.1.4"
 	kotlin("jvm") version "1.9.22"
 	kotlin("plugin.spring") version "1.9.22"
+
+	id("io.gitlab.arturbosch.detekt") version "1.23.5"
 }
 
 group = "lab.pguma.spring"
@@ -36,4 +39,15 @@ tasks.withType<KotlinCompile> {
 
 tasks.withType<Test> {
 	useJUnitPlatform()
+}
+
+detekt {
+	source.setFrom("src/main/kotlin")
+}
+
+tasks.withType<Detekt>().configureEach {
+	jvmTarget = "21"
+	reports {
+		html.required.set(true)
+	}
 }
